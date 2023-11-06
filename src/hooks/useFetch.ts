@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { IApiResponse } from "../types/interfaces/IApiResponse";
 
-function useFetch<T>(url: string): IApiResponse<T> {
+const BASE_URL = process.env.REACT_APP_API_URL;
+function useFetch<T>(endpoint: string): IApiResponse<T> {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -13,7 +14,7 @@ function useFetch<T>(url: string): IApiResponse<T> {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(url, { signal });
+        const response = await fetch(`${BASE_URL}${endpoint}`, { signal });
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
@@ -33,7 +34,7 @@ function useFetch<T>(url: string): IApiResponse<T> {
     return () => {
       abortController.abort();
     };
-  }, [url]);
+  }, [endpoint]);
 
   return { data, isLoading, error };
 }
