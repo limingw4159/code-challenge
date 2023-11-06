@@ -1,18 +1,37 @@
 import React from "react";
 import useFetch from "../hooks/useFetch";
 
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+
 const ServiceList: React.FC = () => {
   const { data, isLoading, error } = useFetch<Service[]>("");
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Fetch Service Failed</div>;
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return <Alert severity="error">Error fetching services: {error}</Alert>;
+  }
 
   return (
-    <ul>
+    <List>
       {data?.map((service, index) => (
-        <li key={index}>{service.name}</li>
+        <ListItem key={index}>
+          <ListItemText primary={service.name} />
+        </ListItem>
       ))}
-    </ul>
+    </List>
   );
 };
 
