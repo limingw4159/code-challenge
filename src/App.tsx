@@ -19,16 +19,7 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box
-        sx={{
-          background:
-            "url(public/background.png) no-repeat center center fixed",
-          backgroundSize: "cover",
-          width: "100vw",
-          height: "100vh",
-          overflow: "auto",
-        }}
-      >
+      <Box>
         <Container component="main" maxWidth="sm">
           <Box my={4}>
             <ServiceList />
