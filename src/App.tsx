@@ -29,9 +29,6 @@ function App() {
           padding: 0,
           backgroundSize: "cover",
           backgroundPosition: "center center",
-          // Other styles can be added here
-
-          // If you want to ensure that the box has a size without content:
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
