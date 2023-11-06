@@ -7,6 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
+import backgroundImage from "./assets/background.png";
 
 function App() {
   return (
@@ -19,7 +20,23 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box>
+      <Box
+        sx={{
+          backgroundImage: `url(${backgroundImage})`,
+          width: "100%",
+          height: "100vh",
+          margin: 0,
+          padding: 0,
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+          // Other styles can be added here
+
+          // If you want to ensure that the box has a size without content:
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Container component="main" maxWidth="sm">
           <Box my={4}>
             <ServiceList />

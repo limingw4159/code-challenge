@@ -21,7 +21,11 @@ const ServiceList: React.FC = () => {
   }
 
   if (error) {
-    return <Alert severity="error">Error fetching services: {error}</Alert>;
+    return (
+      <Alert sx={{ width: "100%" }} severity="error">
+        Error fetching services: {error}
+      </Alert>
+    );
   }
 
   return (
