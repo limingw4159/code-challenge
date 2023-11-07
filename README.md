@@ -6,6 +6,7 @@ Front-end application for Code Challenge.
 
 - Node.js
 - Yarn (install dependencies with `yarn`)
+- Material UI
 
 ## Configuration
 
