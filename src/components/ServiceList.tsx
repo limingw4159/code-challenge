@@ -14,7 +14,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Paper from "@mui/material/Paper";
 
 const ServiceList: React.FC = () => {
-  const { data, isLoading, error } = useFetch<Service[]>("");
+  const { data, isLoading, error } = useFetch<IService[]>("");
 
   if (isLoading) {
     return (

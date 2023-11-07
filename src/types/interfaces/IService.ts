@@ -1,4 +1,4 @@
-interface Service {
+interface IService {
   name: string;
   version: string;
 }
