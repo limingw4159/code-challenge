@@ -1,3 +1,26 @@
+# Code Challenge
+
+Front-end application for Code Challenge.
+
+## Requirements
+
+- Node.js
+- Yarn (install dependencies with `yarn`)
+
+## Configuration
+
+Change your own variables in `.env` to get started. This will automatically configure default API.
+
+## Project structure
+
+### Main
+
+- `App.tsx` - main app entry point.
+
+### Components
+
+- `ServiceList.tsx` - displays list of available Services.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
