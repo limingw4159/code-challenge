@@ -25,6 +25,8 @@ function App() {
           backgroundImage: `url(${backgroundImage})`,
           width: "100%",
           height: "100vh",
+          minWidth: 800,
+          minHeight: 500,
           margin: 0,
           padding: 0,
           backgroundSize: "cover",
