@@ -4,7 +4,7 @@ Front-end application for Code Challenge.
 
 ## Requirements
 
-- Node.js
+- Node.js 20
 - Yarn (install dependencies with `yarn`)
 - Material UI
 
@@ -20,7 +20,7 @@ Change your own variables in `.env` to get started. This will automatically conf
 
 ### Components
 
-- `ServiceList.tsx` - displays list of available Services.
+- `ServiceList.tsx` - displays list of available services.
 
 # Getting Started with Create React App
 
