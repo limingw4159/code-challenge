@@ -1,12 +1,10 @@
 import { renderHook } from "@testing-library/react-hooks";
 import { act } from "react-test-renderer";
-import useFetch from "../useFetch"; // adjust the import according to your file structure
+import useFetch from "../useFetch";
 
-// Mocking the global fetch function
 global.fetch = jest.fn();
 
 beforeEach(() => {
-  // Clear all instances and calls to constructor and all methods:
   (global.fetch as jest.Mock).mockClear();
 });
 
