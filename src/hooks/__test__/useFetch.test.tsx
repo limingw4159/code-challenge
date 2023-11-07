@@ -1,64 +1,79 @@
 import { renderHook } from "@testing-library/react-hooks";
-import { rest } from "msw";
-import { setupServer } from "msw/node";
-import useFetch from "./path-to-your-hook/useFetch";
+import { act } from "react-test-renderer";
+import useFetch from "../useFetch"; // adjust the import according to your file structure
 
-// Mocking an API endpoint for the tests
-const server = setupServer(
-  rest.get(
-    `${process.env.REACT_APP_API_URL}/test-endpoint`,
-    (req, res, ctx) => {
-      return res(ctx.json({ data: "mocked data" }));
-    }
-  )
-);
+// Mocking the global fetch function
+global.fetch = jest.fn();
 
-// // Enable API mocking before tests.
-// beforeAll(() => server.listen());
+beforeEach(() => {
+  // Clear all instances and calls to constructor and all methods:
+  (global.fetch as jest.Mock).mockClear();
+});
 
-// // Reset any runtime request handlers we may add during the tests.
-// afterEach(() => server.resetHandlers());
+const mockJsonResponse = (data: any) => {
+  return Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(data),
+  });
+};
 
-// // Disable API mocking after the tests are done.
-// afterAll(() => server.close());
+const mockJsonResponseError = (error: any) => {
+  return Promise.resolve({
+    ok: false,
+    status: error.status,
+    json: () => Promise.reject(error),
+  });
+};
 
-// describe("useFetch", () => {
-//   test("should initially set isLoading to true and data to null", async () => {
-//     const { result, waitForNextUpdate } = renderHook(() =>
-//       useFetch("/test-endpoint")
-//     );
+describe("useFetch", () => {
+  it("gives back data on success", async () => {
+    const mockData = { message: "success" };
+    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+      mockJsonResponse(mockData)
+    );
 
-//     expect(result.current.isLoading).toBe(true);
-//     expect(result.current.data).toBeNull();
+    const { result, waitForNextUpdate } = renderHook(() => useFetch("/test"));
 
-//     await waitForNextUpdate();
-//   });
+    await act(async () => {
+      await waitForNextUpdate();
+    });
 
-//   test("should return data after successful fetch", async () => {
-//     const { result, waitFor } = renderHook(() => useFetch("/test-endpoint"));
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toBe(null);
+  });
 
-//     await waitFor(() => result.current.isLoading === false);
+  it("sets error when fetch fails", async () => {
+    const error = new Error("failed to fetch");
+    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+      Promise.reject(error)
+    );
 
-//     expect(result.current.data).toEqual({ data: "mocked data" });
-//     expect(result.current.error).toBeNull();
-//   });
+    const { result, waitForNextUpdate } = renderHook(() => useFetch("/test"));
 
-//   test("should handle fetch error", async () => {
-//     // Here we're setting up the server to return a 500 error for this test
-//     server.use(
-//       rest.get(
-//         `${process.env.REACT_APP_API_URL}/test-endpoint`,
-//         (req, res, ctx) => {
-//           return res(ctx.status(500));
-//         }
-//       )
-//     );
+    await act(async () => {
+      await waitForNextUpdate();
+    });
 
-//     const { result, waitFor } = renderHook(() => useFetch("/test-endpoint"));
+    expect(result.current.data).toBe(null);
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toBe(error.message);
+  });
 
-//     await waitFor(() => result.current.isLoading === false);
+  it("sets error when response is not ok", async () => {
+    const error = { status: 404 };
+    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+      mockJsonResponseError(error)
+    );
 
-//     expect(result.current.error).not.toBeNull();
-//     expect(result.current.data).toBeNull();
-//   });
-// });
+    const { result, waitForNextUpdate } = renderHook(() => useFetch("/test"));
+
+    await act(async () => {
+      await waitForNextUpdate();
+    });
+
+    expect(result.current.data).toBe(null);
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toContain("Error:");
+  });
+});
